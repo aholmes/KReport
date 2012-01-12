@@ -1,5 +1,5 @@
 Getting started
- The OFC module works in a fashion similar to the DB query builder. Methods can be chained together to quickly build a graph, and there are a few different ways to achieve your end result.
+ The KReport module works in a fashion similar to the DB query builder. Methods can be chained together to quickly build a graph, and there are a few different ways to achieve your end result.
  
 The module works with the concept of singletons between graphs, charts, and elements.
 You can instantiate each of these object types (except elements) and add them to the graph later, or you can call the instance() method in each class (except elements) and let the class handle the instantiation for you.
@@ -7,27 +7,27 @@ You can instantiate each of these object types (except elements) and add them to
 The broad overview of how these three main classes fit together is as follows:
 A graph is a collection of charts and elements intended for display on a website or exportation as csv or a table.
 A chart is a collection of data points. Each chart has a type and different properties.
-An element is a setting of the graph, such as the x/y axes. Elements are managed and coordinated through the use of methods in the OFC class.
+An element is a setting of the graph, such as the x/y axes. Elements are managed and coordinated through the use of methods in the KReport class.
  
 Load the Library
 Bootstrap
  
 Add the following to your bootstrap modules array:
-'ofc' => MODPATH.'OFC'
+'kreport' => MODPATH.'KReport'
  
 
 Creating a new Graph
  
 
-Each OFC graph you want to display must be created in either of these styles.
+Each KReport graph you want to display must be created in either of these styles.
 
 These both create a graph with the name "default."
 
  
 
-$chart = OFC::instance();
+$chart = KReport::instance();
  
-$chart = new OFC('default');
+$chart = new KReport('default');
 From here, you can start adding charts to the graph. View the Charts section for information on how to do this.
 
 Displaying the Graph
@@ -49,81 +49,81 @@ $chart
 Graph Options
 Set the width of the graph. This can be any valid CSS unit.
 
-OFC::instance()->width( '100%' );
+KReport::instance()->width( '100%' );
 Set the height of the graph. This can be any valid CSS unit.
 
-OFC::instance()->height( '200' );
+KReport::instance()->height( '200' );
 Set the X-axis labels of the graph. This must be a numerically indexed array.
 
-OFC::instance()->x_labels( array('one', 'two', 'three', 'four', 'five) );
+KReport::instance()->x_labels( array('one', 'two', 'three', 'four', 'five) );
 Set the Y-axis labels of the graph. This must be a numerically indexed array.
 
-OFC::instance->y_labels( array('one', 'two', 'three', 'four', 'five) );
+KReport::instance->y_labels( array('one', 'two', 'three', 'four', 'five) );
 Set the right Y-axis labels of the graph. This must be a numerically indexed array.
 
-OFC::instance()->y_labels_right( array('five', 'four', 'three', 'two', 'one') );
+KReport::instance()->y_labels_right( array('five', 'four', 'three', 'two', 'one') );
 Set the X-axis steps. This is how many units to skip past, and when to display a value on the X axis. That is, if the X-axis steps are set to 2, a value will be displayed every 2 units instead of every 1.
 
-OFC::instance()->x_steps( 2 );
+KReport::instance()->x_steps( 2 );
 Set the Y-axis steps. This is how many units to skip past, and when to display a value on the Y axis. That is, if the Y-axis steps are set to 2, a value will be displayed every 2 units instead of every 1.
 
- OFC::instance()->y_steps ( 5 );
+ KReport::instance()->y_steps ( 5 );
 Set the right Y-axis steps. This is how many units to skip past, and when to display a value on the right Y axis. That is, if the right Y-axis steps are set to 2, a value will be displayed every 2 units instead of every 1.
 
- OFC::instance()->y_steps_right( 10 );
+ KReport::instance()->y_steps_right( 10 );
 Set the colour of the X-axis
 
- OFC::instance()->x_colour( '#FF0000' );
+ KReport::instance()->x_colour( '#FF0000' );
 Set the colour of the Y-axis
 
- OFC::instance()->y_colour( '#00FF00' );
+ KReport::instance()->y_colour( '#00FF00' );
 Set the colour of the right Y-axis
 
- OFC::instance()->y_colour_right( '#0000FF' );
+ KReport::instance()->y_colour_right( '#0000FF' );
 Set the stroke width of the X-axis
 
- OFC::instance()->x_stroke( 1 );
+ KReport::instance()->x_stroke( 1 );
 Set the stroke width of the Y-axis
 
- OFC::instance()->y_stroke( 1 );
+ KReport::instance()->y_stroke( 1 );
 Set the stroke width of the right Y-axis
 
- OFC::instance()->y_stroke_right( 1 );
+ KReport::instance()->y_stroke_right( 1 );
 Set the tick length of the X-axis
 
- OFC::instance()->x_tick_length( 1 );
+ KReport::instance()->x_tick_length( 1 );
 Set the tick length of the Y-axis
 
- OFC::instance()->y_tick_length( 1 );
+ KReport::instance()->y_tick_length( 1 );
 Set the tick length of the right Y-axis
 
- OFC::instance()->y_tick_length_right( 1 );
+ KReport::instance()->y_tick_length_right( 1 );
 
 Set the background colour of the graph.
 
-OFC::instance()->bg_colour( '#FFFFFF' );
+KReport::instance()->bg_colour( '#FFFFFF' );
 Set the title of the graph.
 
-OFC::instance()->title( 'Votes per Hour' );
+KReport::instance()->title( 'Votes per Hour' );
 Set the X-axis alias
 
-OFC::instance()->x_alias( 'Hour' );
+KReport::instance()->x_alias( 'Hour' );
 Set the Y-axis alias
 
-OFC::instance()->y_alias( 'Votes' );
+KReport::instance()->y_alias( 'Votes' );
 Allow the graph to be exported to CSV and display an 'Export to CSV' link at the bottom of the graph.
 
-OFC::instance()->exportable();
+KReport::instance()->exportable();
 Force the X-axis range. Arguments are $min and $max.
 
-OFC::instance()->x_range( 0, 23 );
+KReport::instance()->x_range( 0, 23 );
 Force the Y-axis range. Arguments are $min and $max.
 
-OFC::instance()->y_range( 0, 100 );
+KReport::instance()->y_range( 0, 100 );
  
 
 Charts
-All chart types are extensions of the OFC_Chart class, which has the following configuration methods:
+All chart types are extensions of the KReport_Chart class, which has the following configuration methods:
 
 Set the key of the chart with a font size of 10.
 
@@ -139,7 +139,7 @@ $chart_instance->halo_size( 2 );
 Set the tooltip of the chart.
 
 $chart_instance->tooltip( 'Value: #y#' );
-Get the name of the OFC_Chart instance.
+Get the name of the KReport_Chart instance.
 
 $chart_instance->get();
 Get the lowest X-value of the chart.
@@ -166,7 +166,7 @@ Line Chart
 Basic Usage
 Use data() method:
 
-$line_instance = $chart->series('Votes Per Hour', OFC_Chart::LINE)
+$line_instance = $chart->series('Votes Per Hour', KReport_Chart::LINE)
                         ->data( array(
                                 0 => 10,
                                 1 => 15,
@@ -175,7 +175,7 @@ $line_instance = $chart->series('Votes Per Hour', OFC_Chart::LINE)
                         ) );
 Use point() method:
 
-$line_instance = $chart->series('Votes Per Hour', OFC_Chart::LINE)
+$line_instance = $chart->series('Votes Per Hour', KReport_Chart::LINE)
                        ->point(0, 10)
                        ->point(1, 15)
                        ->point(2, 5)
@@ -191,7 +191,7 @@ Bar Chart
 Basic Usage
 Use data() method:
 
-$bar_instance = $chart->series('Votes Per Hour', OFC_Chart::BAR)
+$bar_instance = $chart->series('Votes Per Hour', KReport_Chart::BAR)
                         ->data( array(
                                 0 => 10,
                                 1 => 15,
@@ -200,7 +200,7 @@ $bar_instance = $chart->series('Votes Per Hour', OFC_Chart::BAR)
                         ) );
 Use point() method:
 
-$bar_instance = $chart->series('Votes Per Hour', OFC_Chart::BAR)
+$bar_instance = $chart->series('Votes Per Hour', KReport_Chart::BAR)
                       ->point(0, 10)
                       ->point(1, 15)
                       ->point(2, 5)
@@ -209,7 +209,7 @@ Area Chart
 Basic Usage
 Use data() method:
 
-$area_instance = $chart->series('Sin', OFC_Chart::AREA)
+$area_instance = $chart->series('Sin', KReport_Chart::AREA)
                   ->data( array(
                           0,
                           1.36297657271,
@@ -222,7 +222,7 @@ $area_instance = $chart->series('Sin', OFC_Chart::AREA)
                   ) );
 Use point() method:
 
-$area_instance = $chart->series('Sin', OFC_Chart::AREA)
+$area_instance = $chart->series('Sin', KReport_Chart::AREA)
                        ->point(0, 0)
                        ->point(1, 1.36297657271)
                        ->point(2, 1.89918984578)
@@ -253,7 +253,7 @@ Pie Chart
 Basic Usage
 Use the data() method:
 
-$pie_instance = $chart->series('Slices of Pie', OFC_Chart::PIE)
+$pie_instance = $chart->series('Slices of Pie', KReport_Chart::PIE)
                       ->data(array(
                               array(
                                       'value' => 50,
@@ -273,7 +273,7 @@ $pie_instance = $chart->series('Slices of Pie', OFC_Chart::PIE)
                       ));
 Use the slice() method:
 
-$pie_instance = $chart->series('Slices of Pie', OFC_Chart::PIE)
+$pie_instance = $chart->series('Slices of Pie', KReport_Chart::PIE)
         ->slice(50, 'People who like pumpkin pie (#val#)')
         ->slice(75, 'People who like apple pie (#val#)')
         ->slice(1,  'People who do not like pie (#val#)')  
@@ -300,27 +300,27 @@ Horizontal Bar Chart
 Basic Usage
 Use the data() method:
 
-$hbar_instance = $chart->series('Days Events', OFC_Chart::HBAR)
+$hbar_instance = $chart->series('Days Events', KReport_Chart::HBAR)
                        ->data( array(
                                array(
                                        'left'  => 0,
                                        'right' => 1
-                                       OFC_Chart::TOOLTIP => 'Wake up between 12am and 1am'
+                                       KReport_Chart::TOOLTIP => 'Wake up between 12am and 1am'
                                ),
                                array(
                                        'left'  => 1,
                                        'right' => 9,
-                                       OFC_Chart::TOOLTIP => 'Work for 8 hours' 
+                                       KReport_Chart::TOOLTIP => 'Work for 8 hours' 
                                ),
                                array(
                                        'left'  => 9
                                        'right' => 16,
-                                       OFC_Chart::TOOLTIP => 'Chill out'  
+                                       KReport_Chart::TOOLTIP => 'Chill out'  
                                ),
                                array(
                                        'left'  => 16,
                                        'right' => 24,
-                                       OFC_Chart::TOOLTIP => 'Sleep'
+                                       KReport_Chart::TOOLTIP => 'Sleep'
                                ),
                                array(
                                        'left'  => 20,
@@ -329,7 +329,7 @@ $hbar_instance = $chart->series('Days Events', OFC_Chart::HBAR)
                        ) );
 Use the bar() method:
 
-$hbar_instance = $chart->series('Days Events', OFC_Chart::HBAR)
+$hbar_instance = $chart->series('Days Events', KReport_Chart::HBAR)
                        ->bar(0, 1,   'Wake up between 12am and 1am')
                        ->bar(1, 9,   'Work for 8 hours')
                        ->bar(9, 16,  'Chill out')
@@ -339,7 +339,7 @@ Stacked Bar Chart
 Basic Usage
 Use the data() method:
 
-$sbar_instance = $chart->series('Stacked Data', OFC_Chart::STACKBAR)
+$sbar_instance = $chart->series('Stacked Data', KReport_Chart::STACKBAR)
                         ->data( array( 
                                 array(0, 10),
                                 array(5, 5),
@@ -348,7 +348,7 @@ $sbar_instance = $chart->series('Stacked Data', OFC_Chart::STACKBAR)
                         ) );
 Use the bar() method:
 
-$sbar_instance = $chart->series('Stacked Data', OFC_Chart::STACKBAR)
+$sbar_instance = $chart->series('Stacked Data', KReport_Chart::STACKBAR)
                        ->bar(0, 10)
                        ->bar(5, 5)
                        ->bar(2, 9)
@@ -364,7 +364,7 @@ Tag Chart
 Basic Usage
 Use the data() method:
 
-$tag_instance = $chart->series('Tags', OFC_Chart::TAG)
+$tag_instance = $chart->series('Tags', KReport_Chart::TAG)
                       ->data( array(
                               0  => 10,
                               1  => 20,
@@ -373,7 +373,7 @@ $tag_instance = $chart->series('Tags', OFC_Chart::TAG)
                       ) );
 Use the point() method:
 
-$tag_instance = $chart->series('Tags', OFC_Chart::TAG)
+$tag_instance = $chart->series('Tags', KReport_Chart::TAG)
                       ->point(0, 10)
                       ->point(1, 20)
                       ->point(13, 2)
@@ -408,13 +408,13 @@ With what we know above, we can create any number of graphs in any configuration
 
 Let's see an example with multiple line charts with a bar chart that has a value for every line chart:
 
-$chart = OFC::instance()
+$chart = KReport::instance()
          ->title('Line and Bar')
          ->width('100%')
          ->height('200')
          ->exportable();
  
-$chart->series('Line', OFC_Chart::LINE)
+$chart->series('Line', KReport_Chart::LINE)
       ->width(2)
       ->key('Arbitrary Data')
       ->data(array(
@@ -426,7 +426,7 @@ $chart->series('Line', OFC_Chart::LINE)
               5 => 5
       ));
  
-$chart->series('Bar', OFC_Chart::BAR)
+$chart->series('Bar', KReport_Chart::BAR)
       ->key('Arbitrary Data')
       ->data(array(
               0 => 10,
@@ -558,7 +558,7 @@ It will also display a data table below the chart, and an "Export CSV" link.
   
 $hours = array('12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm');
   
-$chart = OFC::instance()
+$chart = KReport::instance()
         ->x_labels($hours)
         ->x_alias('Hours')
         ->bg_colour('#FFFFFF')
@@ -567,16 +567,16 @@ $chart = OFC::instance()
         ->height('200')
         ->exportable();
   
-$images = $chart->series('Images', OFC_Chart::LINE)
+$images = $chart->series('Images', KReport_Chart::LINE)
                 ->key('Images');
   
-$pages = $chart->series('Pages', OFC_Chart::LINE)
+$pages = $chart->series('Pages', KReport_Chart::LINE)
                ->key('Pages');
  
-$itags = $chart->series('image_tags', OFC_Chart::TAG)
+$itags = $chart->series('image_tags', KReport_Chart::TAG)
                ->text('#y#');  
  
-ptags = $chart->series('page_tags', OFC_Chart::TAG)
+ptags = $chart->series('page_tags', KReport_Chart::TAG)
               ->text('#y#');  
   
 foreach($data as $hour => $hits)
