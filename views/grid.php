@@ -1,5 +1,5 @@
 <?php
-// TODO hbar/sbar display
+// TODO hbar/sbar display and bar bottom / top values
 $table_data = array();
 
 // get a count of all rows for each chart type so that columns will line up properly
@@ -94,10 +94,10 @@ foreach($table_data as $class_name=>$chart_data) { ?>
 	<tr class="KReport_Totals_Row">
 		<td class="KReport_Totals_Col" align="right">Totals</td>
 		<?php $row_total = 0; foreach($chart_data['totals'] as $chart_total) { ?>
-		<td class="KReport_Totals_Col_Total" align="right"><?php if (is_int($chart_total)) { echo $chart_total; $row_total += $chart_total; } ?></td>
+		<td class="KReport_Totals_Col_Total" align="right"><?php if (is_int($chart_total)) { echo number_format($chart_total, (strpos($chart_total, '.')) ? 2 : 0); $row_total += $chart_total; } ?></td>
 		<?php } unset($chart_data['totals']); ?>
 		<?php if (count($chart_data['charts']) > 1) { ?>
-		<td class="KReport_Totals_Col_RowTotal"><?php echo $row_total; ?></td>
+		<td class="KReport_Totals_Col_RowTotal" align="right"><?php echo number_format($row_total, (strpos($row_total, '.')) ? 2 : 0); ?></td>
 		<?php } ?>
 	</tr>
 	<?php foreach($chart_data as $index=>$data) { if (!is_int($index)) continue; ?>
@@ -106,14 +106,17 @@ foreach($table_data as $class_name=>$chart_data) { ?>
 		<?php $x_total = 0; foreach($data['charts'] as $chart_name=>$value) { ?>
 		<td class="KReport_Data_Col_Data" align="right">
 		<?php if (is_array($value)) { 
-			echo $value[0] . ' > ' . $value[1];
-		} else { ?>
-		<?php echo $value; $x_total += $value; ?>
-		<?php } } ?>
+			echo number_format($value[0], (strpos($value[0], '.')) ? 2 : 0) . ' > ' . number_format($value[1], (strpos($value[1], '.')) ? 2 : 0);
+			// FIXME bar chart only
+		} elseif(is_object($value)) {
+			echo number_format($value->top, (strpos($value->top, '.')) ? 2 : 0); $x_total += $value->top;
+		} else {
+			echo number_format($value, (strpos($value, '.')) ? 2 : 0); $x_total += $value;
+		} } ?>
 		</td>
 		<?php if (count($chart_data['charts']) > 1) { ?>
-		<td class="KReport_Data_Col_Total">
-			<?php echo $x_total; ?>
+		<td class="KReport_Data_Col_Total" align="right">
+			<?php echo number_format($x_total, (strpos($x_total, '.')) ? 2 : 0); ?>
 		</td>
 		<?php } ?>
 	</tr>
