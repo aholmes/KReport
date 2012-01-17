@@ -30,9 +30,9 @@ class Controller_KReport extends Controller
 		if ($this->config->allow_linkback === true)
 			die(header('Location: https://github.com/aholmes/KReport'));
 
-			$this->action_version();
+		$this->action_version();
 
-			exit;
+		exit;
 	}
 
 	/**

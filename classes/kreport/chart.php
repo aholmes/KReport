@@ -19,6 +19,7 @@ class KReport_Chart
 	const HALO_SIZE = 20010;
 	const VALUES    = 20011;
 	const TOOLTIP   = 20012;
+	const ON_CLICK  = 20013;
 
 	/**
 	 * @var string The default instance name
@@ -219,6 +220,9 @@ class KReport_Chart
 				break;
 				case self::TOOLTIP:
 					$this->ofc_chart->set_tooltip($value);
+				break;
+				case self::ON_CLICK:
+					$this->ofc_chart->set_on_click($value);
 				break;
 			}
 		}
@@ -436,4 +440,17 @@ class KReport_Chart
 
 		return $this->set(self::VALUES, $points);
 	}
+
+	/**
+	 * Set an onclick() javascript handler for the stack
+	 * 
+	 * @param string $click The javascript handler
+	 * @return KReport_Chart_StackBar The instance being operated on
+	 * @access public
+	 */
+	function on_click($click)
+	{
+		return $this->set(self::ON_CLICK, $click);
+	}
+
 }
