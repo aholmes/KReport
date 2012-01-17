@@ -25,6 +25,52 @@ class OFC_Dot{
 		$this->colour = $colour;
 	}
 
-}
+	/**
+	 * For line charts that only require a Y position
+	 * for each point.
+	 * @param $value as integer, the Y position
+	 */
+	function value( $value )
+	{
+		$this->value = $value;
+	}
+	
+	/**
+	 * For scatter charts that require an X and Y position for
+	 * each point.
+	 * 
+	 * @param $x as integer
+	 * @param $y as integer
+	 */
+	function position( $x, $y )
+	{
+		$this->x = $x;
+		$this->y = $y;
+	}
 
+	function type( $type )
+	{
+		$this->type = $type;
+		return $this;
+	}
+
+	/**
+	 * Rotate the anchor object.
+	 * @param $angle is an integer.
+	 */
+	function rotation($angle)
+	{
+		$this->rotation = $angle;
+		return $this;
+	}
+
+	/**
+	 * @param $sides is an integer. Number of sides this shape has.
+	 */
+	function sides($sides)
+	{
+		$this->sides = $sides;
+		return $this;
+	}
+}
 ?>

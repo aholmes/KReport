@@ -56,7 +56,7 @@ foreach($charts as $chart_name=>$chart_data)
 			$table_data[$chart_data['class']][$index]['charts'][$chart_name] = array();
 
 		if (!isset($table_data[$chart_data['class']]['totals'][$chart_name]))
-			$table_data[$chart_data['class']]['totals'][$chart_name] = $x;
+			$table_data[$chart_data['class']]['totals'][$chart_name] = 0;
 
 		if (!isset($table_data[$chart_data['class']]['charts'][$chart_name]))
 			$table_data[$chart_data['class']]['charts'][$chart_name] = $chart_name;
@@ -64,7 +64,20 @@ foreach($charts as $chart_name=>$chart_data)
 		$table_data[$chart_data['class']][$index]['charts'][$chart_name] = $x;
 
 		if (is_int($x))
+		{
 			$table_data[$chart_data['class']]['totals'][$chart_name] += $x;
+		}
+		else if (is_array($x))
+		{
+			if (isset($x[0]) && isset($x[1]))
+			{
+				$table_data[$chart_data['class']]['totals'][$chart_name] += $value[1];
+			}
+			else if (isset($x['y']))
+			{
+				$table_data[$chart_data['class']]['totals'][$chart_name] += $x['y'];
+			}
+		}
 	}
 
 	while ($index < $chart_counts[$chart_data['class']])
@@ -106,7 +119,14 @@ foreach($table_data as $class_name=>$chart_data) { ?>
 		<?php $x_total = 0; foreach($data['charts'] as $chart_name=>$value) { ?>
 		<td class="KReport_Data_Col_Data" align="right">
 		<?php if (is_array($value)) { 
-			echo number_format($value[0], (strpos($value[0], '.')) ? 2 : 0) . ' > ' . number_format($value[1], (strpos($value[1], '.')) ? 2 : 0);
+			if (isset($value[0]) && isset($value[1]))
+			{
+				echo number_format($value[0], (strpos($value[0], '.')) ? 2 : 0) . ' > ' . number_format($value[1], (strpos($value[1], '.')) ? 2 : 0); $x_total += $value[1];
+			}
+			else if (isset($value['y']))
+			{
+				echo number_format($value['y'], (strpos($value['y'], '.')) ? 2 : 0); $x_total += $value['y'];
+			}
 			// FIXME bar chart only
 		} elseif(is_object($value)) {
 			echo number_format($value->top, (strpos($value->top, '.')) ? 2 : 0); $x_total += $value->top;
