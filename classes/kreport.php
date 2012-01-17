@@ -1,5 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+// FIXME When a series has the same name among multiple KReport instances, the original will be overwritten.
+// You should be allowed to have the same series name among multiple KReport instances
+
 /**
  * Integrate KReport_Chart and KReport_Element classes together to create a KReport object
  */
@@ -205,6 +208,10 @@ class KReport
 				case self::X_TICK_LENGTH:
 				case self::Y_TICK_LENGTH:
 				case self::Y_TICK_LENGTH_RIGHT:
+				case KReport_Element_Axis_X::LABEL_COLOUR:
+				case KReport_Element_Axis_X::LABEL_SIZE:
+				case KReport_Element_Axis_X::LABEL_STEPS:
+				case KReport_Element_Axis_X::LABEL_ROTATE:
 					// TODO it would be nice if we can avoid having to re-execute elements after subsequent execute() calls
 					//if (in_array($var, $this->elements_added))
 					//	break;
@@ -293,6 +300,22 @@ class KReport
 					if ($var == self::Y_TICK_LENGTH_RIGHT)
 						$this->element[self::Y_AXIS_RIGHT] = KReport_Element::instance($this->__toString(), KReport_Element::Y_AXIS_RIGHT)
 							->set(KReport_Element_Axis::TICK_LENGTH, $value);
+
+					if ($var == KReport_Element_Axis_X::LABEL_COLOUR)
+						$this->element[self::X_AXIS] = KReport_Element::instance($this->__toString(), KReport_Element::X_AXIS)
+							->set(KReport_Element_Axis_X::LABEL_COLOUR, $value);
+
+					if ($var == KReport_Element_Axis_X::LABEL_SIZE)
+						$this->element[self::X_AXIS] = KReport_Element::instance($this->__toString(), KReport_Element::X_AXIS)
+							->set(KReport_Element_Axis_X::LABEL_SIZE, $value);
+
+					if ($var == KReport_Element_Axis_X::LABEL_STEPS)
+						$this->element[self::X_AXIS] = KReport_Element::instance($this->__toString(), KReport_Element::X_AXIS)
+							->set(KReport_Element_Axis_X::LABEL_STEPS, $value);
+
+					if ($var == KReport_Element_Axis_X::LABEL_ROTATE)
+						$this->element[self::X_AXIS] = KReport_Element::instance($this->__toString(), KReport_Element::X_AXIS)
+							->set(KReport_Element_Axis_X::LABEL_ROTATE, $value);
 				break;
 				default:
 					throw new Exception('Cannot set values for variable "' . $var . '" in ' . __CLASS__);
@@ -398,6 +421,19 @@ class KReport
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Retrieve the OFC2 chart object
+	 * 
+	 * @return OFC_Chart The OFC2 chart object
+	 */
+	function get()
+	{
+		if (!isset($this->ofc_chart))
+			return $this->execute()->get();
+
+		return $this->ofc_chart;
 	}
 
 	/**
@@ -550,8 +586,12 @@ class KReport
 
 		if ($as_file === true)
 		{
+			if (ob_get_level())
+				ob_clean();
+
 			header('Content-Type: text/csv');
 			header('Content-disposition: attachment;filename=chart_' . (isset($this->_config[self::TITLE]) ? str_replace('/[^a-zA-Z0-9_-]/', '', $this->_config[self::TITLE]) : '') . '_' . date('Y-m-dH-i-s', time()) . '.csv');
+
 			die(rtrim($csv));
 		}
 		else
