@@ -18,7 +18,10 @@ class Controller_KReport extends Controller
 	{
 		parent::before();
 
-		$this->config = (object)Kohana_Config::instance()->load('kreport')->get('default');
+		if (version_compare(Kohana::VERSION, '3.2.0') >= 0)
+			$this->config = Kohana::$config->load('kreport')->get('default');
+		else
+			$this->config = (object)Kohana_Config::instance()->load('kreport')->get('default');
 	}
 
 	/**
@@ -89,11 +92,47 @@ class Controller_KReport extends Controller
 		if (ob_get_level())
 			ob_clean();
 
-		Request::instance()->send_file($path, false, array(
-			'inline' => true,
-			'delete' => false
-		));
+		if (version_compare(Kohana::VERSION, '3.2.0') >= 0)
+			$response = Request::initial()->response();
+		else
+			$response = Request::instance();
 
-		throw new Exception('Failed to send file ' . $path);
+		// If Kohana can't send the file, it might be due to incompatible or missing libs, so try sending it another way
+		try
+		{
+			$response->send_file($path, false, array(
+				'inline' => true,
+				'delete' => false
+			));
+		}
+		catch(Exception $e)
+		{
+			if (version_compare(Kohana::VERSION, '3.2.0') >= 0)
+				Log::instance()->add(Log::WARNING, 'Kohana failed to send file, trying ourselves: ' . $e->getMessage());
+			else
+				Kohana_Log::instance()->add('warning', 'Kohana failed to send file, trying ourselves: ' . $e->getMessage());
+
+			// non-static zlib module
+			if ($e->getCode() === 8)
+			{
+				header('Content-Length: ' . filesize($path));
+
+				if (function_exists('mime_content_type'))
+				{
+					header('Content-Type: ' . mime_content_type($path));
+				}
+				else
+				{
+					// Log a warning because it is possible this will fail in the client browser
+					if (version_compare(Kohana::VERSION, '3.2.0') >= 0)
+						Log::instance()->add(Log::WARNING, 'Function "mime_content_type" is undefined. Client browser may not interpret file contents correctly.');
+					else
+						Kohana_Log::instance()->add('warning', 'Function "mime_content_type" is undefined. Client browser may not interpret file contents correctly.');
+				}
+
+				$handler = fopen($path, 'rb');
+				fpassthru($handler);
+			}
+		}
 	}
 }
