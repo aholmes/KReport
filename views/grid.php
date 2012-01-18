@@ -78,6 +78,11 @@ foreach($charts as $chart_name=>$chart_data)
 				$table_data[$chart_data['class']]['totals'][$chart_name] += $x['y'];
 			}
 		}
+		// FIXME bar chart only
+		else if (is_object($x))
+		{
+			$table_data[$chart_data['class']]['totals'][$chart_name] += $x->top;
+		}
 	}
 
 	while ($index < $chart_counts[$chart_data['class']])
