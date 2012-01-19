@@ -43,23 +43,14 @@ class KReport_Chart_Pie extends KReport_Chart
 			switch($var)
 			{
 				case self::ALPHA:
-					if (!is_int($value) && !is_float($value))
-						throw new Exception ('Alpha for ' . __CLASS__ . ' must be an integer or float');
-
 					$this->ofc_chart->set_alpha($value);
 				break;
 				case self::ANGLE:
-					if (!is_int($value))
-						throw new Exception ('Angle for ' . __CLASS__ . ' must be an integer');
-					
 					$this->ofc_chart->set_start_angle($value);
 				break;
 				case self::ANIMATION:
 				break;
 				case self::BORDER:
-					if (!is_int($value))
-						throw new Exception ('Border must be an integer');
-
 					$this->ofc_chart->set_border($value);
 				break;
 				case self::COLOURS:

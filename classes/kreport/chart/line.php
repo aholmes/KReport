@@ -44,9 +44,6 @@ class KReport_Chart_Line extends KReport_Chart
 			switch($var)
 			{
 				case self::WIDTH:
-					if (!is_int($value))
-						throw new Exception ('Width for ' . __CLASS__ . ' must be an integer');
-
 					$this->ofc_chart->set_width($value);
 				break;
 				case self::DOT_COLOUR:
@@ -56,9 +53,6 @@ class KReport_Chart_Line extends KReport_Chart
 					$this->dot->set_colour($value);
 				break;
 				case self::DOT_SIZE:
-					if (!is_int($value))
-						throw new Exception ('Dot size for ' . __CLASS__ . ' must be an integer');
-
 					if (is_null($this->dot))
 						$this->dot = new OFC_Dot('dot');
 
@@ -103,7 +97,7 @@ class KReport_Chart_Line extends KReport_Chart
 							$dot->value((float)$y);
 						}
 
-						$vals[(float)$x] = $dot;
+						$vals[] = $dot;
 					}
 
 					$this->ofc_chart->set_values($vals);
@@ -201,7 +195,7 @@ class KReport_Chart_Line extends KReport_Chart
 	 */
 	function dot_size($dot_size)
 	{
-		return $this->set(self::DOT_SIZE, (float)$dot_size);
+		return $this->set(self::DOT_SIZE, $dot_size);
 	}
 
 	/**

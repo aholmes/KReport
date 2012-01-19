@@ -200,7 +200,7 @@ class KReport_Chart
 			switch($var)
 			{
 				case self::KEY:
-					if (!is_array($value) || !(array_key_exists('text', $value) && array_key_exists('font_size', $value)) || !is_int($value['font_size']))
+					if (!is_array($value) || !(array_key_exists('text', $value) && array_key_exists('font_size', $value)))
 						throw new Exception ('Key value must be an array with indexes "text" and "font_size"');
 
 					$this->ofc_chart->set_key($value['text'], $value['font_size']);
@@ -209,9 +209,6 @@ class KReport_Chart
 					$this->ofc_chart->set_colour($value);
 				break;
 				case self::HALO_SIZE:
-					if (!is_int($value))
-						throw new Exception ('Halo size for ' . __CLASS__ . ' must be an integer');
-					
 					$this->ofc_chart->set_halo_size($value);
 				break;
 				case self::VALUES:
