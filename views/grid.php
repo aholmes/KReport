@@ -137,11 +137,11 @@ foreach($table_data as $class_name=>$chart_data) { ?>
 			}
 			// FIXME bar chart only
 		} elseif(is_object($value)) {
-			if ($x instanceof OFC_Charts_Bar)
+			if ($value instanceof OFC_Charts_Bar_Value)
 			{
 				echo number_format($value->top, (strpos($value->top, '.')) ? 2 : 0); $x_total += $value->top;
 			}
-			elseif ($x instanceof OFC_tag)
+			elseif ($value instanceof OFC_tag)
 			{
 				echo number_format($value->x, (strpos($value->x, '.')) ? 2 : 0); $x_total += $value->x;
 			}
