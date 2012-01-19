@@ -118,6 +118,26 @@ class KReport_Chart_Line extends KReport_Chart
 	}
 
 	/**
+	 * Return the chart x and y value as index $x as a CSV string
+	 * 
+	 * @param integer $x The index of the value to retrieve
+	 * @return string A CSV string containing the x and y values at index $x
+	 * @access public
+	 */
+	function to_csv($x)
+	{
+		if (is_array($this->_config[self::VALUES][$x]))
+		{
+			if (isset($this->_config[self::VALUES]) && isset($this->_config[self::VALUES][$x]))
+				return $x . ',' . $this->_config[self::VALUES][$x]['y'] . "\n";
+		}
+		else
+		{
+			return parent::to_csv($x);
+		}
+	}
+
+	/**
 	 * Add a new dot (point) to the chart with an optional tooltip value
 	 * 
 	 * @param integer $x The X value of the point
