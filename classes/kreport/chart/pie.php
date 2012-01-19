@@ -77,7 +77,7 @@ class KReport_Chart_Pie extends KReport_Chart
 					{
 						if (is_array($value) && isset($value['value']) && isset($value['text']))
 						{
-							$this->_config[self::VALUES][$index] = new OFC_Charts_Pie_Value(intval($value['value']), $value['text']);
+							$this->_config[self::VALUES][$index] = new OFC_Charts_Pie_Value((float)$value['value'], $value['text']);
 						}
 						else if (is_array($value) && isset($value['value']))
 						{
@@ -168,7 +168,7 @@ class KReport_Chart_Pie extends KReport_Chart
 		$slices = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
 		$index = count($slices);
 
-		$slices[$index]['value'] = intval($number);
+		$slices[$index]['value'] = (float)$number;
 
 		if (!is_null($text))
 			$slices[$index]['text'] = $text;

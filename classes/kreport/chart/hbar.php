@@ -102,8 +102,8 @@ class KReport_Chart_HBar extends KReport_Chart
 		$bars = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
 		$index = count($bars);
 
-		$bars[$index]['left']  = intval($left);
-		$bars[$index]['right'] = intval($right);
+		$bars[$index]['left']  = (float)$left;
+		$bars[$index]['right'] = (float)$right;
 
 		if (!is_null($tooltip))
 			$bars[$index][self::TOOLTIP] = $tooltip;

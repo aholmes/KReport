@@ -757,8 +757,8 @@ class KReport
 	function x_range($min, $max)
 	{
 		return $this->set(self::X_AXIS, array(
-			'min' => intval($min),
-			'max' => intval($max)
+			'min' => (float)$min,
+			'max' => (float)$max
 		));
 	}
 	
@@ -773,8 +773,8 @@ class KReport
 	function y_range($min, $max)
 	{
 		return $this->set(self::Y_AXIS, array(
-			'min' => intval($min),
-			'max' => intval($max)
+			'min' => (float)$min,
+			'max' => (float)$max
 		));
 	}
 

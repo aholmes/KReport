@@ -91,7 +91,7 @@ class KReport_Chart_Line extends KReport_Chart
 
 						if (is_array($y))
 						{
-							$dot->value(intval($y['y']));
+							$dot->value((float)$y['y']);
 
 							if (isset($y['tooltip']))
 							{
@@ -100,10 +100,10 @@ class KReport_Chart_Line extends KReport_Chart
 						}
 						else
 						{
-							$dot->value(intval($y));
+							$dot->value((float)$y);
 						}
 
-						$vals[intval($x)] = $dot;
+						$vals[(float)$x] = $dot;
 					}
 
 					$this->ofc_chart->set_values($vals);
@@ -152,15 +152,15 @@ class KReport_Chart_Line extends KReport_Chart
 
 		if (is_null($tooltip))
 		{
-			$dots[intval($x)] = array(
-				'y' => intval($y)
+			$dots[(float)$x] = array(
+				'y' => (float)$y
 			);
 		}
 		else
 		{
 			
-			$dots[intval($x)] = array(
-				'y' => intval($y),
+			$dots[(float)$x] = array(
+				'y' => (float)$y,
 				'tooltip' => $tooltip
 			);
 		}
@@ -201,7 +201,7 @@ class KReport_Chart_Line extends KReport_Chart
 	 */
 	function dot_size($dot_size)
 	{
-		return $this->set(self::DOT_SIZE, intval($dot_size));
+		return $this->set(self::DOT_SIZE, (float)$dot_size);
 	}
 
 	/**

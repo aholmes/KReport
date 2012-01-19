@@ -42,16 +42,16 @@ class KReport_Chart_Bar extends KReport_Chart
 		{
 			$value = new OFC_Charts_Bar_Value($y1, $y2);
 			$value->set_tooltip($tooltip);
-			$points[intval($x)] = $value;
+			$points[(float)$x] = $value;
 		}
 		elseif (!is_null($y2))
 		{
 			$value = new OFC_Charts_Bar_Value($y1, $y2);
-			$points[intval($x)] = $value;
+			$points[(float)$x] = $value;
 		}
 		else
 		{
-			$points[intval($x)] = intval($y1);
+			$points[(float)$x] = (float)$y1;
 		}
 
 		return $this->set(self::VALUES, $points);

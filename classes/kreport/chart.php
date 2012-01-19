@@ -405,7 +405,7 @@ class KReport_Chart
 	{
 		return $this->set(self::KEY, array(
 			'text'      => $text,
-			'font_size' => intval($font_size)
+			'font_size' => (float)$font_size
 		));
 	}
 
@@ -457,7 +457,7 @@ class KReport_Chart
 	{
 		$points = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
 
-		$points[intval($x)] = intval($y);
+		$points[(float)$x] = (float)$y;
 
 		return $this->set(self::VALUES, $points);
 	}

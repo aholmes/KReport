@@ -144,7 +144,7 @@ class KReport_Chart_Tag extends KReport_Chart
 	{
 		return $this->set(self::FONT, array(
 			'font_name' => $font_name,
-			'font_size' => intval($font_size)
+			'font_size' => (float)$font_size
 		));
 	}
 
@@ -159,8 +159,8 @@ class KReport_Chart_Tag extends KReport_Chart
 	function padding($horizontal, $vertical)
 	{
 		return $this->set(self::PADDING, array(
-			'horizontal' => intval($horizontal),
-			'vertical'   => intval($vertical)
+			'horizontal' => (float)$horizontal,
+			'vertical'   => (float)$vertical
 		));
 	}
 
@@ -215,7 +215,7 @@ class KReport_Chart_Tag extends KReport_Chart
 		return $this->set(self::STYLE, array(
 			'bold'      => ($bold) ? true : false,
 			'underline' => ($underline) ? true : false,
-			'border'    => intval($border),
+			'border'    => (float)$border,
 			'alpha'     => $alpha
 		));
 	}

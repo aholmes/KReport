@@ -128,7 +128,7 @@ class KReport_Chart_StackBar extends KReport_Chart
 
 		$stacks[$index]['colour']    = $colour;
 		$stacks[$index]['text']      = $text;
-		$stacks[$index]['font-size'] = intval($font_size);
+		$stacks[$index]['font-size'] = (float)$font_size;
 
 		return $this->set(self::STACK, $stacks);
 	}
@@ -147,8 +147,8 @@ class KReport_Chart_StackBar extends KReport_Chart
 		$bars = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
 		$index = count($bars);
 
-		$bars[$index][] = intval($y1);
-		$bars[$index][] = intval($y2);
+		$bars[$index][] = (float)$y1;
+		$bars[$index][] = (float)$y2;
 
 		return $this->set(self::VALUES, $bars);
 	}
