@@ -81,7 +81,10 @@ foreach($charts as $chart_name=>$chart_data)
 		// FIXME bar chart only
 		else if (is_object($x))
 		{
-			$table_data[$chart_data['class']]['totals'][$chart_name] += $x->top;
+			if ($x instanceof OFC_Charts_Bar)
+				$table_data[$chart_data['class']]['totals'][$chart_name] += $x->top;
+			elseif ($x instanceof OFC_tag)
+				$table_data[$chart_data['class']]['totals'][$chart_name] += $x->x;
 		}
 	}
 
@@ -134,7 +137,14 @@ foreach($table_data as $class_name=>$chart_data) { ?>
 			}
 			// FIXME bar chart only
 		} elseif(is_object($value)) {
-			echo number_format($value->top, (strpos($value->top, '.')) ? 2 : 0); $x_total += $value->top;
+			if ($x instanceof OFC_Charts_Bar)
+			{
+				echo number_format($value->top, (strpos($value->top, '.')) ? 2 : 0); $x_total += $value->top;
+			}
+			elseif ($x instanceof OFC_tag)
+			{
+				echo number_format($value->x, (strpos($value->x, '.')) ? 2 : 0); $x_total += $value->x;
+			}
 		} else {
 			echo number_format($value, (strpos($value, '.')) ? 2 : 0); $x_total += $value;
 		} } ?>
