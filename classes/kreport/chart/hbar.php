@@ -24,10 +24,6 @@ class KReport_Chart_HBar extends KReport_Chart
 
 			switch($var)
 			{
-				case self::KEY:
-				case self::COLOUR:
-				case self::HALO_SIZE:
-				break;
 				case self::VALUES:
 					$this->ofc_chart->set_values(null);
 
@@ -41,8 +37,6 @@ class KReport_Chart_HBar extends KReport_Chart
 						$this->ofc_chart->append_value($v);
 					}
 				break;
-				default:
-					throw new Exception('Cannot set values for variable "' . $var . '" in ' . __CLASS__);
 			}
 		}
 

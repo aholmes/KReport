@@ -53,5 +53,21 @@ class OFC_Charts_Area extends OFC_Charts_Base
 	{
 		$this->values = $v;
 	}
+
+	function set_colour( $colour )
+	{
+		$this->colour = $colour;
+	}
+
+	function set_key( $text, $font_size )
+	{
+		$this->text = $text;
+		$this->{'font-size'} = $font_size;
+	}
+
+	function set_width( $width )
+	{
+		$this->width = $width;
+	}
 }
 

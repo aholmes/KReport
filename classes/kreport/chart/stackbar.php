@@ -6,7 +6,6 @@
 class KReport_Chart_StackBar extends KReport_Chart
 {
 	const COLOURS   = 25001;
-	const ON_CLICK  = 25002;
 	const STACK     = 25003;
 	const KEYS      = 25004;
 
@@ -29,14 +28,6 @@ class KReport_Chart_StackBar extends KReport_Chart
 
 			switch($var)
 			{
-				case self::KEY:
-				case self::COLOUR:
-				case self::HALO_SIZE:
-				case self::TOOLTIP:
-				break;
-				case self::ON_CLICK:
-					$this->ofc_chart->set_on_click($value);
-				break;
 				case self::COLOURS:
 					$this->ofc_chart->set_colours($value);
 				break;
@@ -69,8 +60,6 @@ class KReport_Chart_StackBar extends KReport_Chart
 						$this->ofc_chart->append_value($values);
 					}
 				break;
-				default:
-					throw new Exception('Cannot set values for variable "' . $var . '" in ' . __CLASS__);
 			}
 		}
 
@@ -162,18 +151,6 @@ class KReport_Chart_StackBar extends KReport_Chart
 		$bars[$index][] = intval($y2);
 
 		return $this->set(self::VALUES, $bars);
-	}
-
-	/**
-	 * Set an onclick() javascript handler for the stack
-	 * 
-	 * @param string $click The javascript handler
-	 * @return KReport_Chart_StackBar The instance being operated on
-	 * @access public
-	 */
-	function on_click($click)
-	{
-		return $this->set(self::ON_CLICK, $click);
 	}
 
 	/**

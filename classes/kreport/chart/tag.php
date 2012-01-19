@@ -24,6 +24,8 @@ class KReport_Chart_Tag extends KReport_Chart
 	{
 		$this->ofc_chart = new OFC_tags();
 
+		parent::execute();
+
 		foreach($this->_config as $var=>$value)
 		{
 			switch($var)
@@ -77,12 +79,45 @@ class KReport_Chart_Tag extends KReport_Chart
 				case self::ROTATE:
 					$this->ofc_chart->rotate($value);
 				break;
+				case self::VALUES:
+					$this->ofc_chart->values = null;
+
+					foreach($value as $index=>$tag)
+					{
+						if ($tag instanceof OFC_tag)
+						{
+							$this->ofc_chart->append_tag($tag);
+						}
+						else
+						{
+							$this->ofc_chart->text($tag);
+						}
+					}
+				break;
 			}
 		}
 
-		parent::execute();
-
 		return $this;
+	}
+
+	function to_csv($x)
+	{
+		if ($this->_config[self::VALUES][$x] instanceof OFC_tag)
+			return $this->_config[self::VALUES][$x]->x . ',' . $this->_config[self::VALUES][$x]->y . "\n";
+		else
+			return $x . ',' . $this->_config[self::VALUES][$x] . "\n";
+	}
+
+	function tag($x, $y, $text = null)
+	{
+		$points = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
+
+		$points[(string)$x] = new OFC_tag($x, $y);
+
+		if (!is_null($text))
+			$points[(string)$x]->text($text);
+
+		return $this->set(self::VALUES, $points);
 	}
 
 	/**
@@ -195,5 +230,89 @@ class KReport_Chart_Tag extends KReport_Chart
 	function rotate($angle)
 	{
 		return $this->set(self::ROTATE, $angle);
+	}
+
+	function get_x_min()
+	{
+		$lowest_x = null;
+
+		foreach($this->_config[self::VALUES] as $index=>$value)
+		{
+			if ($value instanceof OFC_tag)
+			{
+				if (is_null($lowest_x) || $value->x < $lowest_x)
+					$lowest_x = $value->x;
+			}
+			else
+			{
+				if ($index < $lowest_x)
+					$lowest_x = $index;
+			}
+		}
+
+		return $lowest_x;
+	}
+
+	function get_x_max() // FIXME innaccurate with negative numbers
+	{
+		$highest_x = 0;
+
+		foreach($this->_config[self::VALUES] as $index=>$value)
+		{
+			if ($value instanceof OFC_tag)
+			{
+				if ($value->x > $highest_x)
+					$highest_x = $value->x;
+			}
+			else
+			{
+				if ($index > $highest_x)
+					$highest_x = $index;
+			}
+		}
+
+		return $highest_x;
+	}
+
+	function get_y_min()
+	{
+		$lowest_y = null;
+
+		foreach($this->_config[self::VALUES] as $index=>$value)
+		{
+			if ($value instanceof OFC_tag)
+			{
+				if (is_null($lowest_y) || $value->y < $lowest_y)
+					$lowest_y = $value->y;
+			}
+			else
+			{
+				if ($value < $lowest_y)
+					$lowest_y = $value;
+			}
+		}
+
+		return $lowest_y;
+	}
+
+	function get_y_max() // FIXME inaccurate with negative numbers
+	{
+		$highest_y = 0;
+
+		foreach($this->_config[self::VALUES] as $index=>$value)
+		{
+			if ($value instanceof OFC_tag)
+			{
+				if ($value->y > $highest_y)
+					$highest_y = $value->y;
+			}
+			else
+			{
+				if ($value > $highest_y)
+					$highest_y = $value;
+			}
+		}
+
+		return $highest_y;
 	}
 }

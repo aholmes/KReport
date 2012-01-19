@@ -9,5 +9,5 @@ swfobject.embedSWF("<?php echo URL::base('http'); ?>KReport/swf", "KReport_<?php
 </script>
 <div class="KReport_Chart" id="KReport_<?php echo $chart->__toString(); ?>"></div>
 <?php if ($chart->get_exportable() === true) { ?>
-<div class="KReport_Export_Link"><a href="?export_<?php echo $chart->__toString(); ?>">Export CSV</a></div>
+<div class="KReport_Export_Link"><a href="<?php echo $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') ? '&' : '?'); ?>export_<?php echo $chart->__toString(); ?>=true&KReport_CSV_Export=<?php echo $chart->__toString(); ?>">Export CSV</a></div>
 <?php } ?>

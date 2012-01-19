@@ -68,11 +68,6 @@ class KReport_Chart_Pie extends KReport_Chart
 
 					$this->ofc_chart->add_colours($value);
 				break;
-				case self::KEY:
-				case self::COLOUR:
-				case self::HALO_SIZE:
-				case self::TOOLTIP:
-				break;
 				// FIXME the parent still calls set_values, and we are just overwritting its work. The parent should instead not process values to save us processing time
 				// A thought: we can use set_CONSTNAME functions to overload the default behavior from the parent instead of a switch statement, and this foreach loop can
 				// instead just call $this->set_CONSTNAME($value);
@@ -92,8 +87,6 @@ class KReport_Chart_Pie extends KReport_Chart
 
 					$this->ofc_chart->set_values($this->_config[self::VALUES]);
 				break;
-				default:
-					throw new Exception('Cannot set values for variable "' . $var . '" in ' . __CLASS__);
 			}
 		}
 

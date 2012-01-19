@@ -51,5 +51,10 @@ class OFC_Elements_Axis_X_Label_Set
 	{
 		$this->rotate = 'vertical';
 	}
+
+	function rotate($angle)
+	{
+		$this->rotate = $angle;
+	}
 }
 

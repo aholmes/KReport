@@ -19,6 +19,7 @@ class KReport_Chart
 	const HALO_SIZE = 20010;
 	const VALUES    = 20011;
 	const TOOLTIP   = 20012;
+	const ON_CLICK  = 20013;
 
 	/**
 	 * @var string The default instance name
@@ -192,6 +193,8 @@ class KReport_Chart
 	 */
 	function execute()
 	{
+		$this->sanity(__FUNCTION__);
+
 		foreach($this->_config as $var=>$value)
 		{
 			switch($var)
@@ -220,10 +223,24 @@ class KReport_Chart
 				case self::TOOLTIP:
 					$this->ofc_chart->set_tooltip($value);
 				break;
+				case self::ON_CLICK:
+					$this->ofc_chart->set_on_click($value);
+				break;
 			}
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Verify particulars are set before executing certain steps
+	 * @access private
+	 */
+	private function sanity($from = null)
+	{
+		// values should always be set before executing or before retrieving min/max x/y values
+		if (!isset($this->_config[self::VALUES]))
+			throw new Exception('Chart "' . $this->_instance . '" does not have any values set' . (!is_null($from) ? '. Called from "' . $from . '"' : '.'));
 	}
 
 	/**
@@ -324,6 +341,8 @@ class KReport_Chart
 	 */
 	function get_x_min()
 	{
+		$this->sanity(__FUNCTION__);
+
 		$x = array_keys($this->_config[self::VALUES]);
 		rsort($x);
 		return array_pop($x);
@@ -337,6 +356,8 @@ class KReport_Chart
 	 */
 	function get_x_max()
 	{
+		$this->sanity(__FUNCTION__);
+
 		$x = array_keys($this->_config[self::VALUES]);
 		sort($x);
 		return array_pop($x);
@@ -350,6 +371,8 @@ class KReport_Chart
 	 */
 	function get_y_min()
 	{
+		$this->sanity(__FUNCTION__);
+
 		$y = array_values($this->_config[self::VALUES]);
 		rsort($y);
 		return array_pop($y);
@@ -363,6 +386,8 @@ class KReport_Chart
 	 */
 	function get_y_max()
 	{
+		$this->sanity(__FUNCTION__);
+
 		$y = array_values($this->_config[self::VALUES]);
 		sort($y);
 		return array_pop($y);
@@ -436,4 +461,17 @@ class KReport_Chart
 
 		return $this->set(self::VALUES, $points);
 	}
+
+	/**
+	 * Set an onclick() javascript handler for the stack
+	 * 
+	 * @param string $click The javascript handler
+	 * @return KReport_Chart_StackBar The instance being operated on
+	 * @access public
+	 */
+	function on_click($click)
+	{
+		return $this->set(self::ON_CLICK, $click);
+	}
+
 }
