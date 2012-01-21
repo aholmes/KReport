@@ -27,6 +27,11 @@ class OFC_Charts_Pie_Value
 		$this->value = $value;
 		$this->label = $text;
 	}
+
+	function set_on_click($text)
+	{
+		$this->{'on-click'} = $text;
+	}
 }
 
 class OFC_Charts_Pie extends OFC_Charts_Base
@@ -72,6 +77,11 @@ class OFC_Charts_Pie extends OFC_Charts_Base
 	function set_border($border)
 	{
 		$this->border = $border;
+	}
+
+	function set_on_click($text)
+	{
+		$this->{'on-click'} = $text;
 	}
 }
 

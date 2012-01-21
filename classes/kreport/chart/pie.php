@@ -5,11 +5,12 @@
  */
 class KReport_Chart_Pie extends KReport_Chart
 {
-	const ALPHA     = 24001;
-	const ANGLE     = 24002;
-	const ANIMATION = 24003;
-	const COLOURS   = 24004;
-	const BORDER    = 24005;
+	const ALPHA          = 24001;
+	const ANGLE          = 24002;
+	const ANIMATION      = 24003;
+	const COLOURS        = 24004;
+	const BORDER         = 24005;
+	const SLICE_ON_CLICK = 24006;
 
 	/**
 	 * Instantiate a new OFC2 OFC_Charts_Pie object and assign properties to it
@@ -69,6 +70,10 @@ class KReport_Chart_Pie extends KReport_Chart
 						if (is_array($value) && isset($value['value']) && isset($value['text']))
 						{
 							$this->_config[self::VALUES][$index] = new OFC_Charts_Pie_Value((float)$value['value'], $value['text']);
+							if (isset($this->_config[self::SLICE_ON_CLICK]) && isset($this->_config[self::SLICE_ON_CLICK][$index]))
+							{
+								$this->_config[self::VALUES][$index]->set_on_click($this->_config[self::SLICE_ON_CLICK][$index]['click']);
+							}
 						}
 						else if (is_array($value) && isset($value['value']))
 						{
@@ -82,6 +87,15 @@ class KReport_Chart_Pie extends KReport_Chart
 		}
 
 		return $this;
+	}
+
+	function slice_on_click($slice_number, $click)
+	{
+		$slices = isset($this->_config[self::SLICE_ON_CLICK]) ? $this->_config[self::SLICE_ON_CLICK] : array();
+
+		$slices[$slice_number]['click'] = $click;
+
+		return $this->set(self::SLICE_ON_CLICK, $slices);
 	}
 
 	/**
@@ -154,7 +168,7 @@ class KReport_Chart_Pie extends KReport_Chart
 	 * @return KReport_Chart_Pie The instance being operated on
 	 * @access public
 	 */
-	function slice($number, $text = null)
+	function slice($number, $text = null, $on_click = null)
 	{
 		$slices = isset($this->_config[self::VALUES]) ? $this->_config[self::VALUES] : array();
 		$index = count($slices);
@@ -163,6 +177,9 @@ class KReport_Chart_Pie extends KReport_Chart
 
 		if (!is_null($text))
 			$slices[$index]['text'] = $text;
+
+		if (!is_null($on_click))
+			$this->slice_on_click($index, $on_click);
 
 		return $this->set(self::VALUES, $slices);
 	}
