@@ -30,9 +30,6 @@ class KReport_Chart_Tag extends KReport_Chart
 		{
 			switch($var)
 			{
-				case self::COLOUR:
-					$this->ofc_chart->colour($value);
-				break;
 				case self::FONT:
 					$this->ofc_chart->font($value['font_name'], $value['font_size']);
 				break;

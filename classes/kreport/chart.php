@@ -54,54 +54,48 @@ class KReport_Chart
 	protected $ofc_chart;
 
 	/**
-	 * @var array An array of default colours for the chart that will be set automatically if no colour is defined for the chart
-	 * @access protected
-	 * @static
-	 */
-	static protected $default_colours = array(
-		'#FFCC99',
-		'#CC6699',
-		'#FFCC00',
-		'#CCCC00',
-		'#339999',
-		'#996699',
-		'#CC6666',
-		'#99CC00',
-		'#FF9933',
-		'#3366CC'
-	);
-
-	/**
 	 * Return a new or already created KReport_Chart instance
 	 * 
+	 * @param string $group The name of the group this instance belongs to. Defaults to KReport::$default
 	 * @param string $name The name of the instance. Defaults to KReport_Chart::$default
 	 * @param array $config Any pre-configuration variables to assign to the instance
 	 * @return KReport the new or previously instantiated KReport_Chart instance
 	 * @access public
 	 * @static
 	 */
-	public static function instance($name = null, array $config = null)
+	public static function instance($group = null, $name = null, array $config = null)
 	{
-		if (!isset(self::$instances[$name]))
+		if (!isset(self::$instances[$group]))
+		{
+			if ($group === NULL)
+			{
+				$group = KReport::$default;
+			}
+
+			self::$instances[$group] = array();
+		}
+
+		if (!isset(self::$instances[$group][$name]))
 		{
 			if ($name === NULL)
 			{
 				$name = self::$default;
 			}
 
-			new KReport_Chart($name, $config);
+			new KReport_Chart($group, $name, $config);
 		}
 
-		return self::$instances[$name];
+		return self::$instances[$group][$name];
 	}
 
 	/**
 	 * Set KReport_Chart::$instances[$name] to the current KReport_Chart instance
 	 * 
+	 * @param string $group The name of the group this instance belongs to
 	 * @param string $name The name of the instance
 	 * @param array $config Any pre-configuration variables to assign to the instance
 	 */
-	function __construct($name, array $config = null)
+	function __construct($group, $name, array $config = null)
 	{
 		$this->_instance = $name;
 		$this->_config   = $config;
@@ -112,35 +106,35 @@ class KReport_Chart
 			switch($config['type'])
 			{
 				case self::LINE:
-					self::$instances[$name] = new KReport_Chart_Line($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Line($name, $config);
 				break;
 				case self::BAR:
-					self::$instances[$name] = new KReport_Chart_Bar($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Bar($name, $config);
 				break;
 				case self::HBAR:
-					self::$instances[$name] = new KReport_Chart_HBar($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_HBar($name, $config);
 				break;
 				case self::STACKBAR:
-					self::$instances[$name] = new KReport_Chart_StackBar($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_StackBar($name, $config);
 				break;
 				case self::AREA:
-					self::$instances[$name] = new KReport_Chart_Area($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Area($name, $config);
 				break;
 				case self::PIE:
-					self::$instances[$name] = new KReport_Chart_Pie($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Pie($name, $config);
 				break;
 				case self::TAG:
-					self::$instances[$name] = new KReport_Chart_Tag($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Tag($name, $config);
 				break;
 				default:
-					self::$instances[$name] = new KReport_Chart_Line($name, $config);
+					self::$instances[$group][$name] = new KReport_Chart_Line($name, $config);
 			}
 		
 			// mark ourselves for unsetting because we are returning a child and not ourselves
 			unset($this);
 
 			// return the child instance so no one can reference $this
-			return self::$instances[$name];
+			return self::$instances[$group][$name];
 		}
 	}
 
@@ -165,24 +159,9 @@ class KReport_Chart
 	 * @return string The colour popped off the default colours array or a random colour if there are no colours left
 	 * @access public
 	 */
-	function get_colour($set = true)
+	function get_colour()
 	{
-		if (!isset($this->_config[self::COLOUR]))
-		{
-			if (!empty(KReport_Chart::$default_colours))
-				$colour = array_pop(KReport_Chart::$default_colours);
-			else
-				$colour = rand(0, 0xFFFFFF);
-
-			if ($set === true)
-			{
-				$this->set(self::COLOUR, $colour);
-			}
-
-			return $colour;
-		}
-
-		return $this->_config[self::COLOUR];
+		return isset($this->_config[self::COLOUR]) ? $this->_config[self::COLOUR] : null;
 	}
 
 	/**
@@ -470,5 +449,4 @@ class KReport_Chart
 	{
 		return $this->set(self::ON_CLICK, $click);
 	}
-
 }

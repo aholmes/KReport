@@ -29,11 +29,6 @@ class KReport_Chart_Line extends KReport_Chart
 		if (get_class($this) === __CLASS__)
 			$this->ofc_chart = new OFC_Charts_Line;
 
-		if (!array_key_exists(self::COLOUR, $this->_config))
-		{
-			$this->get_colour();
-		}
-
 		parent::execute();
 
 		foreach($this->_config as $var=>$value)

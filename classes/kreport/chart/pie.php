@@ -22,18 +22,6 @@ class KReport_Chart_Pie extends KReport_Chart
 	{
 		$this->ofc_chart = new OFC_Charts_Pie;
 
-		if (!array_key_exists(self::COLOURS, $this->_config))
-		{
-			$colours = array();
-
-			foreach($this->_config[self::VALUES] as $index=>$value)
-			{
-				$colours[$index] = $this->get_colour(false);
-			}
-
-			$this->colours($colours);
-		}
-
 		parent::execute();
 
 		foreach($this->_config as $var=>$value)
@@ -87,6 +75,11 @@ class KReport_Chart_Pie extends KReport_Chart
 		}
 
 		return $this;
+	}
+
+	function get_colours()
+	{
+		return isset($this->_config[self::COLOURS]) ? $this->_config[self::COLOURS] : null;
 	}
 
 	function slice_on_click($slice_number, $click)

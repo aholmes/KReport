@@ -65,7 +65,7 @@ class KReport
 	protected $_config = array();
 
 	/**
-	 * @var array KReport_Chart classes that are to be added to the KReport instance
+	 * @var array KReport_Chart classes that are to be added to the KReport instance. Stored in groups if instances
 	 * @access private
 	 */
 	private $chart = array();
@@ -105,6 +105,19 @@ class KReport
 	 * @access private
 	 */
 	private $chain_series = false;
+
+	public $default_chart_colours = array(
+		'#FFCC99',
+		'#CC6699',
+		'#FFCC00',
+		'#CCCC00',
+		'#339999',
+		'#996699',
+		'#CC6666',
+		'#99CC00',
+		'#FF9933',
+		'#3366CC'
+	);
 
 	/**
 	 * Return a new or already created KReport instance
@@ -323,13 +336,36 @@ class KReport
 		}
 
 		// execute KReport_Chart instances if they haven't yet been executed
-		foreach($this->chart as $chart_name=>$chart)
+		foreach($this->chart[$this->_instance] as $chart_name=>$chart)
 		{
 			// TODO it would be nice if we can avoid re-executing KReport_Chart_* instances if they have already been executed.
 			//if (in_array($chart_name, $this->charts_added))
 			//	continue;
 
 			//$this->charts_added[] = $chart_name;
+
+			// some chart types require an array of colours, while other have one colour type
+			if (defined(get_class($chart) . '::COLOURS'))
+			{
+				if (!$chart->get_colours())
+				{
+					$colours = array();
+
+					foreach($chart->get_values() as $index=>$value)
+					{
+						$colours[$index] = $this->get_colour();
+					}
+
+					$chart->colours($colours);
+				}
+			}
+			else
+			{
+				if (!$chart->get_colour())
+				{
+					$chart->colour($this->get_colour());
+				}
+			}
 
 			$this->ofc_chart->add_element($chart->execute()->get());
 		}
@@ -340,7 +376,7 @@ class KReport
 		{
 			$min = 0;
 			$max = 0;
-			foreach($this->chart as $chart_name=>$chart)
+			foreach($this->chart[$this->_instance] as $chart_name=>$chart)
 			{
 				// pie charts don't have a X/Y axis. KReport_Chart_Pie will tell us the min/max x/y values, but we don't really need them
 				if ($chart instanceof KReport_Chart_Pie)
@@ -363,7 +399,7 @@ class KReport
 		{
 			$min = 0;
 			$max = 0;
-			foreach($this->chart as $chart_name=>$chart)
+			foreach($this->chart[$this->_instance] as $chart_name=>$chart)
 			{
 				// see above about pie
 				if ($chart instanceof KReport_Chart_Pie)
@@ -423,6 +459,14 @@ class KReport
 		return $this;
 	}
 
+	function get_colour()
+	{
+		if (!empty($this->default_chart_colours))
+			return array_pop($this->default_chart_colours);
+		else
+			return rand(0, 0xFFFFFF);
+	}
+
 	/**
 	 * Retrieve the OFC2 chart object
 	 * 
@@ -471,7 +515,7 @@ class KReport
 	{
 		$arr = array();
 
-		foreach($this->chart as $chart_name=>$chart)
+		foreach($this->chart[$this->_instance] as $chart_name=>$chart)
 		{
 			if (!is_null($chart_name_match))
 			{
@@ -547,7 +591,7 @@ class KReport
 		// TODO update to use as_array so to_csv can be removed from the KReport_Chart_* classes.
 		$csv = '';
 
-		foreach($this->chart as $chart_name=>$chart)
+		foreach($this->chart[$this->_instance] as $chart_name=>$chart)
 		{
 			if (!is_null($chart_name_match))
 			{
@@ -627,12 +671,15 @@ class KReport
 			if (!is_null($type))
 				$type = array('type' => $type);
 
-			$this->series_instance = $this->chart[$chart] = KReport_Chart::instance($chart, $type);
+			if (!isset($this->chart[$this->_instance]))
+				$this->chart[$this->_instance] = array();
+
+			$this->series_instance = $this->chart[$this->_instance][$chart] = KReport_Chart::instance($this->_instance, $chart, $type);
 		}
 
 		if ($chart instanceof KReport_Chart)
 		{
-			$this->series_instance = $this->chart[$chart->__toString()] = $chart;
+			$this->series_instance = $this->chart[$this->_instance][$chart->__toString()] = $chart;
 		}
 
 		if ($chain_this === true)
@@ -697,18 +744,18 @@ class KReport
 
 			if ($chart instanceof KReport_Chart)
 			{
-				if (!in_array($chart, $this->chart))
+				if (!in_array($chart, $this->chart[$this->_instance]))
 					$this->series($chart);
 
-				$chart_instance = $this->chart[$chart->__toString()];
+				$chart_instance = $this->chart[$this->_instance][$chart->__toString()];
 			}
 
 			if (is_string($chart))
 			{
-				if (!array_key_exists($chart, $this->chart))
+				if (!array_key_exists($chart, $this->chart[$this->_instance]))
 					$this->series($chart);
 
-				$chart_instance = $this->chart[$chart];
+				$chart_instance = $this->chart[$chart][$this->_instance];
 			}
 
 			$chart_instance->set($var, $value);
@@ -1112,10 +1159,10 @@ class KReport
 		if (is_array($args[0]) || is_object($args[0]))
 			throw new Exception('Invalid chart name or number');
 
-		if (!isset($this->chart[$args[0]]))
+		if (!isset($this->chart[$this->_instance][$args[0]]))
 			$this->series($args[0]);
 
-		$chart_instance = $this->chart[$args[0]];
+		$chart_instance = $this->chart[$this->_instance][$args[0]];
 		$callback = array($chart_instance, $func);
 
 		array_shift($args);

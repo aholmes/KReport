@@ -15,11 +15,6 @@ class KReport_Chart_Bar extends KReport_Chart
 	{
 		$this->ofc_chart = new OFC_Charts_Bar;
 
-		if (!array_key_exists(self::COLOUR, $this->_config))
-		{
-			$this->get_colour();
-		}
-
 		parent::execute();
 
 		return $this;

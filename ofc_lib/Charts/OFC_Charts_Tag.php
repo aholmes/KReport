@@ -15,7 +15,7 @@ class OFC_tags
 		$this->values	= array();
 	}
 	
-	function colour( $colour )
+	function set_colour( $colour )
 	{
 		$this->colour = $colour;
 		return $this;
