@@ -20,6 +20,7 @@ class KReport_Chart
 	const VALUES    = 20011;
 	const TOOLTIP   = 20012;
 	const ON_CLICK  = 20013;
+	const AXIS      = 20014;
 
 	/**
 	 * @var string The default instance name
@@ -202,6 +203,9 @@ class KReport_Chart
 				case self::ON_CLICK:
 					$this->ofc_chart->set_on_click($value);
 				break;
+				case self::AXIS:
+					$this->ofc_chart->set_axis($value);
+				break;
 			}
 		}
 
@@ -276,6 +280,13 @@ class KReport_Chart
 	function data(array $data)
 	{
 		$this->set(self::VALUES, $data);
+
+		return $this;
+	}
+
+	function axis($axis)
+	{
+		$this->set(self::AXIS, $axis);
 
 		return $this;
 	}

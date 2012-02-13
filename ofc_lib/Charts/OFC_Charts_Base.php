@@ -29,5 +29,9 @@ class OFC_Charts_Base
             $this->tip = $tip;
     }
 
+	function set_axis( $axis )
+	{
+		$this->axis = $axis;
+	}
 }
 

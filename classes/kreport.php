@@ -634,7 +634,7 @@ class KReport
 				ob_clean();
 
 			header('Content-Type: text/csv');
-			header('Content-disposition: attachment;filename=chart_' . (isset($this->_config[self::TITLE]) ? str_replace('/[^a-zA-Z0-9_-]/', '', $this->_config[self::TITLE]) : '') . '_' . date('Y-m-dH-i-s', time()) . '.csv');
+			header(str_replace("\n", '', 'Content-disposition: attachment;filename=chart_' . (isset($this->_config[self::TITLE]) ? str_replace('/[^a-zA-Z0-9_-]/', '', $this->_config[self::TITLE]) : '') . '_' . date('Y-m-dH-i-s', time()) . '.csv'));
 
 			die(rtrim($csv));
 		}
@@ -820,6 +820,22 @@ class KReport
 	function y_range($min, $max)
 	{
 		return $this->set(self::Y_AXIS, array(
+			'min' => (float)$min,
+			'max' => (float)$max
+		));
+	}
+
+	/**
+	 * For the Y axis range instead of allowing KReport to figure it out
+	 * 
+	 * @param integer $min The minimum value of the Y axis
+	 * @param integer $max The maximum value of the Y axis
+	 * @return KReport The KReport instance being operated on
+	 * @access public
+	 */
+	function y_range_right($min, $max)
+	{
+		return $this->set(self::Y_AXIS_RIGHT, array(
 			'min' => (float)$min,
 			'max' => (float)$max
 		));
